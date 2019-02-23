@@ -9,23 +9,34 @@ namespace DecisionTreeClassifierV2.DecisionTreeClassifier
 {
     class DecisionTree
     {
+        public Datarow[] data { get; private set; }
         public Node start_node { get; private set; }
-        public DecisionTree(Node start_node)
-        {
-            this.start_node = start_node;
-        }
+        public Stack<Node> nodes_to_build { get; private set; }
 
-        private Node ClassifyData(Datarow row, Node node)
+        public DecisionTree(Datarow[] data)
         {
-            if (node is Leaf) return node;
-
-            if ((node as DecisionNode).question.Match(row)) return (ClassifyData(row, (node as DecisionNode).true_branch));
-            else return (ClassifyData(row, (node as DecisionNode).false_branch));
+            this.data = data;
+            this.nodes_to_build = new Stack<Node>();
         }
 
         public Leaf Classify(Datarow row)
         {
-            return (Leaf)ClassifyData(row, this.start_node);
+            Node thisNode;
+            if (start_node is DecisionNode) thisNode = (Node)(start_node as DecisionNode).Clone();
+            else thisNode = (Node)(start_node as Leaf).Clone();
+
+            while (!(thisNode is Leaf))
+            {
+                if ((thisNode as DecisionNode).question.Match(row))
+                {
+                    thisNode = (thisNode as DecisionNode).true_branch;
+                }
+                else
+                {
+                    thisNode = (thisNode as DecisionNode).false_branch;
+                }
+            }
+            return (Leaf)thisNode;
         }
 
         static public void PrintTree(Node startNode, string spacing)
@@ -44,17 +55,41 @@ namespace DecisionTreeClassifierV2.DecisionTreeClassifier
             PrintTree((startNode as DecisionNode).false_branch, spacing + "  ");
         }
 
-        static public Node BuildTree(Datarow[] data)
+        public void ProcessStack()
+        {
+            Node node = this.nodes_to_build.Pop();
+            if (node is DecisionNode)
+            {
+                DecisionNode decisionNode = (DecisionNode)node;
+                decisionNode.true_branch = BuildNode(decisionNode.true_branch_data);
+                decisionNode.false_branch = BuildNode(decisionNode.false_branch_data);
+                this.nodes_to_build.Push(decisionNode.true_branch);
+                this.nodes_to_build.Push(decisionNode.false_branch);
+            }
+        }
+
+       
+        public void BuildTree()
+        {
+            this.start_node = BuildNode(this.data);
+            nodes_to_build.Push(this.start_node);
+            while(nodes_to_build.Count > 0)
+            {
+                ProcessStack();
+            }
+        }
+
+
+        // static data
+
+        static public Node BuildNode(Datarow[] data)
         {
             Tuple<double, Question> best_question_tuple = FindBestQuestion(data);
             if (best_question_tuple.Item1 == 0) return new Leaf(data);
 
             Tuple<Datarow[], Datarow[]> truefalse_rows = Partition(data, best_question_tuple.Item2);
 
-            var true_branch = BuildTree(truefalse_rows.Item1);
-            var false_branch = BuildTree(truefalse_rows.Item2);
-
-            return new DecisionNode(best_question_tuple.Item2, true_branch, false_branch);
+            return new DecisionNode(best_question_tuple.Item2, truefalse_rows.Item1, truefalse_rows.Item2);
         }
 
         static public double Gini(Datarow[] rows)

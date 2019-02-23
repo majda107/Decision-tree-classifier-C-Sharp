@@ -7,7 +7,7 @@ using DecisionTreeClassifierV2.Dataset;
 
 namespace DecisionTreeClassifierV2.DecisionTreeClassifier
 {
-    class Leaf : Node
+    class Leaf : Node, ICloneable
     {
         public Datarow[] rows { get; private set; }
         public Tuple<object, int>[] predictions { get; private set; }
@@ -24,6 +24,11 @@ namespace DecisionTreeClassifierV2.DecisionTreeClassifier
             message += "}";
 
             return message;
+        }
+
+        public object Clone()
+        {
+            return (object)new Leaf(this.rows);
         }
     }
 }
