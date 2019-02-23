@@ -14,6 +14,6 @@
 You can find **examples** of using this library in **Program.cs** (including comments)
 
 ## To-do
-* ~~re-write algorithms to use virtual stack or be non-recursive because of stackoverflow exception~~ **DONE** \n *NOTE: PrintTree function still uses recursion and can cause issues with bigger datasets*
+* **DONE** ~~rewrite algorithms to use virtual stack or be non-recursive because of stackoverflow exception~~ *NOTE: PrintTree function still uses recursion and can cause issues with bigger datasets*
 * Save decision tree to file (probably via binary convertor?)
 * Print decision tree to file (pdf?)
