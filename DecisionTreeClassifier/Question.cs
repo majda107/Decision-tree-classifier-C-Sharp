@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 namespace DecisionTreeClassifierV2.DecisionTreeClassifier
 {
+    [Serializable()]
     class Question
     {
         private int column;

@@ -7,6 +7,7 @@ using DecisionTreeClassifierV2.Dataset;
 
 namespace DecisionTreeClassifierV2.DecisionTreeClassifier
 {
+    [Serializable()]
     class Leaf : Node, ICloneable
     {
         public Datarow[] rows { get; private set; }

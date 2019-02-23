@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 
 namespace DecisionTreeClassifierV2.Dataset
 {
+    [Serializable()]
     class Datarow
     {
         public object[] values { get; private set; }

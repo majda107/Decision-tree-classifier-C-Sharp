@@ -2,21 +2,40 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.IO;
+using System.Runtime.Serialization.Formatters;
+using System.Runtime.Serialization;
 using DecisionTreeClassifierV2.Dataset;
 using System.Threading.Tasks;
+using System.Runtime.Serialization.Formatters.Binary;
 
 namespace DecisionTreeClassifierV2.DecisionTreeClassifier
 {
+    [Serializable()]
     class DecisionTree
     {
         public Datarow[] data { get; private set; }
         public Node start_node { get; private set; }
         public Stack<Node> nodes_to_build { get; private set; }
-
         public DecisionTree(Datarow[] data)
         {
             this.data = data;
             this.nodes_to_build = new Stack<Node>();
+        }
+
+        public void SaveToDat(string path)
+        {
+            FileStream fs = new FileStream(path, FileMode.Create);
+            BinaryFormatter formatter = new BinaryFormatter();
+
+            try
+            {
+                formatter.Serialize(fs, this);
+            }
+            catch (SerializationException e)
+            {
+                Console.WriteLine(e.Message);
+            }
         }
 
         public Leaf Classify(Datarow row)
@@ -84,6 +103,16 @@ namespace DecisionTreeClassifierV2.DecisionTreeClassifier
 
         // static data
 
+        static public DecisionTree ReadFromDat(string path)
+        {
+            if (File.Exists(path))
+            {
+                FileStream fs = new FileStream(path, FileMode.Open);
+                BinaryFormatter formatter = new BinaryFormatter();
+                return (DecisionTree)formatter.Deserialize(fs);
+            }
+            else throw new FileNotFoundException();
+        }
         private static void PrintNode(Node node, string spacing, bool status)
         {
             Console.Write(spacing);

@@ -75,6 +75,9 @@ namespace DecisionTreeClassifierV2
             Console.WriteLine((trainingDataTree.Classify(new Datarow("Red;2")).ToString())); // should output: can be only grape
             Console.WriteLine((trainingDataTree.Classify(new Datarow("Green;10")).ToString())); // should ouput: can be only apple
 
+            // --> save tree to .dat file           trainingDataTree.SaveToDat(path);
+            // --> load tree from .dat file         DecisionTree trainingDataTree = DecisionTree.ReadFromDat(path);
+
             Console.ReadKey();
         }
     }

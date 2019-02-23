@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 
 namespace DecisionTreeClassifierV2.DecisionTreeClassifier
 {
+    [Serializable()]
     class DecisionNode : Node, ICloneable
     {
         public Question question { get; private set; }
