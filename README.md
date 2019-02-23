@@ -1,4 +1,4 @@
-## Simple decision tree classifier written completely in C#, more improvements to come
+# Simple decision tree classifier written completely in C#
 
 *The idea was taken from video by Josh from Google devs (https://www.youtube.com/watch?v=LDRbO9a6XPU&t=122s)*
 
@@ -14,7 +14,6 @@
 You can find **examples** of using this library in **Program.cs** (including comments)
 
 ## To-do
-* ~~re-write algorithms to use virtual stack or be non-recursive because of stackoverflow exception~~ **DONE** 
-*NOTE: PrintTree function still uses recursion and can cause issues with bigger datasets*
+* ~~re-write algorithms to use virtual stack or be non-recursive because of stackoverflow exception~~ **DONE** \n *NOTE: PrintTree function still uses recursion and can cause issues with bigger datasets*
 * Save decision tree to file (probably via binary convertor?)
 * Print decision tree to file (pdf?)
