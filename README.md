@@ -9,11 +9,9 @@
 3. Build **decision tree classifier** by calling method `BuildTree()` on your DecisionTree object
 4. **Classify data** using `Classify(datarow)` method on your DecisionTree object
 
-*NOTE: Try to avoid using PrintTree function with bigger datasets, can cause issues (will be fixed in future)*
-
 You can find **examples** of using this library in **Program.cs** (including comments)
 
 ## To-do
-* **DONE** ~~rewrite algorithms to use virtual stack or be non-recursive because of stackoverflow exception~~ *NOTE: PrintTree function still uses recursion and can cause issues with bigger datasets*
+* **DONE** ~~rewrite algorithms to use virtual stack or be non-recursive because of stackoverflow exception~~ 
 * Save decision tree to file (probably via binary convertor?)
 * Print decision tree to file (pdf?)

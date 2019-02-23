@@ -39,20 +39,22 @@ namespace DecisionTreeClassifierV2.DecisionTreeClassifier
             return (Leaf)thisNode;
         }
 
-        static public void PrintTree(Node startNode, string spacing)
+        public void PrintTree()
         {
-            if (startNode is Leaf)
+            string spacing = "";
+            Stack<Tuple<Node, bool, string>> nodes_to_print = new Stack<Tuple<Node, bool, string>>();
+            nodes_to_print.Push(new Tuple<Node, bool, string>(this.start_node, true, spacing));
+            while(nodes_to_print.Count > 0)
             {
-                Console.WriteLine((startNode as Leaf).ToString());
-                return;
+                Tuple<Node, bool, string>  tuple = nodes_to_print.Pop();
+                PrintNode(tuple.Item1, tuple.Item3, tuple.Item2);
+                if(tuple.Item1 is DecisionNode)
+                {
+                    spacing += "  ";
+                    nodes_to_print.Push(new Tuple<Node, bool, string>((tuple.Item1 as DecisionNode).false_branch, false, spacing));
+                    nodes_to_print.Push(new Tuple<Node, bool, string>((tuple.Item1 as DecisionNode).true_branch, true, spacing));
+                }
             }
-
-            Console.WriteLine(spacing + (startNode as DecisionNode).ToString());
-            Console.WriteLine(spacing + "--> true");
-            PrintTree((startNode as DecisionNode).true_branch, spacing + "  ");
-
-            Console.WriteLine(spacing + "--> false");
-            PrintTree((startNode as DecisionNode).false_branch, spacing + "  ");
         }
 
         public void ProcessStack()
@@ -81,6 +83,24 @@ namespace DecisionTreeClassifierV2.DecisionTreeClassifier
 
 
         // static data
+
+        private static void PrintNode(Node node, string spacing, bool status)
+        {
+            Console.Write(spacing);
+            Console.ForegroundColor = (status) ? ConsoleColor.Green : ConsoleColor.Red;
+            Console.Write("--> " + status.ToString());
+            Console.ForegroundColor = ConsoleColor.Gray;
+            if (node is DecisionNode)
+            {
+                Console.Write(" " + (node as DecisionNode).ToString());
+                Console.Write("\n");
+            }
+            else
+            {
+                Console.Write(" " + (node as Leaf).ToString());
+                Console.Write("\n");
+            }
+        }
 
         static public Node BuildNode(Datarow[] data)
         {

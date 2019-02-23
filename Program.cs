@@ -65,8 +65,8 @@ namespace DecisionTreeClassifierV2
 
             DecisionTree trainingDataTree = new DecisionTree(training); // creating decision tree classifier with training dataset
             trainingDataTree.BuildTree(); // building tree
-            
-            DecisionTree.PrintTree(trainingDataTree.start_node, ""); // tree visualized
+
+            trainingDataTree.PrintTree(); // tree visualized
 
             Console.WriteLine(); // spacing lel
 
